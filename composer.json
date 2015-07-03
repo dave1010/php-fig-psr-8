@@ -1,0 +1,27 @@
+{
+    "name": "dave1010/psr-8",
+    "description": "PHP FIG PSR-8 implementation",
+    "license": "MIT",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Dave Hulbert",
+            "email": "dave1010@gmail.com"
+        }
+    ],
+    "autoload": {
+        "classmap": ["src/"],
+        "psr-4": {
+            "Psr\\Hug\\" : "src/",
+            "Dave1010\\Hug\\" : "src/"
+        }
+    },
+    "require": {
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.6"
+    },
+    "config": {
+        "preferred-install": "dist"
+    }
+}
