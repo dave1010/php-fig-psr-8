@@ -36,6 +36,20 @@ class HuggerTest extends \PHPUnit_Framework_TestCase
         $hugger->hug($hugger);
     }
 
+    public function testAllFriendsAreHuggedBack()
+    {
+        $hugger = new Hugger();
+
+        $mock1 = $this->prophesize(Huggable::class);
+        $mock1->hug($hugger)->shouldBeCalled();
+
+        $mock2 = $this->prophesize(Huggable::class);
+        $mock2->hug($hugger)->shouldBeCalled();
+
+        $hugger->hug($mock1->reveal());
+        $hugger->hug($mock2->reveal());
+    }
+
     public function testGroupHug()
     {
         $hugger = new Hugger();

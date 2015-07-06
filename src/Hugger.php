@@ -8,7 +8,7 @@ use Psr\Hug\Huggable;
 class Hugger implements Huggable, GroupHuggable
 {
     /** @var \SplObjectStorage */
-    private $hugMap;
+    private $currentlyHuggingFriendList;
 
     /** @var int */
     private $minHugsRequired;
@@ -20,7 +20,7 @@ class Hugger implements Huggable, GroupHuggable
      */
     public function __construct($minHugsRequired = 1)
     {
-        $this->hugMap = new \SplObjectStorage();
+        $this->currentlyHuggingFriendList = new \SplObjectStorage();
         $this->minHugsRequired = $minHugsRequired;
     }
 
@@ -41,15 +41,19 @@ class Hugger implements Huggable, GroupHuggable
             throw new \Exception('Should not attempt to hug self');
         }
 
-        if ($this->hugMap->contains($friend) && $this->minHugsRequired <= 0) {
-            // no more hugs :-(
+        if ($this->currentlyHuggingFriendList->contains($friend)) {
+            // we're already trying to hug $friend
+            // don't initiate another hug loop
             return;
         }
 
-        $this->minHugsRequired--;
+        $this->currentlyHuggingFriendList->attach($friend);
 
-        $this->hugMap->attach($friend);
+        $hugBacksExpected = $this->minHugsRequired;
+        while ($hugBacksExpected--) {
+            $friend->hug($this);
+        }
 
-        $friend->hug($this);
+        $this->currentlyHuggingFriendList->detach($friend);
     }
 }
